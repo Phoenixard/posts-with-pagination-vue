@@ -57,8 +57,9 @@ const availableElements = computed(() => {
 onMounted(() => {
   if (pageId.value && pageId.value > availableElements.value) {
     currentPage.value = 1
-  } else {
-      currentPage.value = Number(pageId.value)
-    }
+  }
+  if (pageId.value && pageId.value < availableElements.value) {
+    currentPage.value = Number(pageId.value)
+  }
 })
 </script>
