@@ -3,8 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: process.env.VITE_PATH,
-
+  base: process.env.NODE_ENV === 'production' ? '/posts-with-pagination-vue/' : '/',
   build: {
     outDir: 'docs',
   }
