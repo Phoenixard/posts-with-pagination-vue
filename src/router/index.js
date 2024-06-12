@@ -1,9 +1,11 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 
+const base = import.meta.env.VITE_PATH
+
 const routes = [
 	{
-		path: '/',
+		path: base,
 		name: 'Home',
 		component: Home,
 	},

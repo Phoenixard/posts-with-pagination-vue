@@ -1,21 +1,19 @@
 <template>
   <h1>Posts with pagination</h1>
   <Controls
-    :elementsPerPage="elementsPerPage"
-    :elementsInPagination="elementsInPagination"
-    @changeElementsPerPage="elementsPerPage = $event"
-    @changeElementsInPagination="elementsInPagination = $event"
+    v-model:perPage="perPage"
+    v-model:inPagination="inPagination"
     />
   <List
     :currentPage="currentPage"
-    :elementsPerPage="elementsPerPage"
-    :elementsCount="elementsCount"
+    :perPage="perPage"
+    :data="data"
   />
   <Pagination
     :currentPage="currentPage"
-    :elementsPerPage="elementsPerPage"
-    :elementsCount="elementsCount"
-    :elementsInPagination="elementsInPagination"
+    :perPage="perPage"
+    :elementsCount="data.length"
+    :inPagination="inPagination"
     @changePage="onChangePage"
   />
 </template>
@@ -31,10 +29,10 @@ import Controls from "../components/Controls.vue";
 const router = useRouter()
 const route = useRoute()
 
-const elementsPerPage = ref(5)
-const elementsInPagination = ref(5)
+const data = ref([])
+const perPage = ref(5)
+const inPagination = ref(5)
 const currentPage = ref(1)
-const elementsCount = ref(100)
 
 const pageId = computed({
   get() {
@@ -51,8 +49,19 @@ const onChangePage = (newPage) => {
 }
 
 const availableElements = computed(() => {
-  return elementsCount.value / elementsPerPage.value
+  return data.value.length / perPage.value
 })
+
+const fetchList = () => {
+  fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json())
+    .then(json => {
+      data.value = json
+    })
+    .catch(error => {
+      console.log(error);
+    })
+}
 
 onMounted(() => {
   if (pageId.value && pageId.value > availableElements.value) {
@@ -61,5 +70,6 @@ onMounted(() => {
   if (pageId.value && pageId.value < availableElements.value) {
     currentPage.value = Number(pageId.value)
   }
+  fetchList()
 })
 </script>

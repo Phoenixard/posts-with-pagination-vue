@@ -46,30 +46,30 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-  elementsPerPage: {
+  perPage: {
     type: Number,
     default: 10
   },
-  elementsInPagination: {
+  inPagination: {
     type: Number,
     default: 5
   }
 })
 
-const emit = defineEmits([ 'changeElementsPerPage', 'changeElementsInPagination' ])
+const emit = defineEmits([ 'update:perPage', 'update:inPagination' ])
 
-const elementsPerPage = ref(props.elementsPerPage)
-const elementsInPagination = ref(props.elementsInPagination)
+const elementsPerPage = ref(props.perPage)
+const elementsInPagination = ref(props.inPagination)
 
 const elementsOnPageConfig = [ 5, 10, 20, 50 ]
 const elementsInPaginationConfig = [ 3, 5, 7 ]
 
 const changeQuantity = () => {
-  emit('changeElementsPerPage', elementsPerPage.value)
+  emit('update:perPage', elementsPerPage.value)
 }
 
 const changeQuantityPagination = () => {
-  emit('changeElementsInPagination', elementsInPagination.value)
+  emit('update:inPagination', elementsInPagination.value)
 }
 </script>
 

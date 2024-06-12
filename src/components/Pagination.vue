@@ -1,5 +1,4 @@
 <template>
-
   <div class="pagination">
     <div
       v-for="element in pagination"
@@ -15,20 +14,18 @@
 
     </div>
   </div>
-
 </template>
 
 <script setup>
 import { computed, watch } from 'vue'
 
 const emit = defineEmits(['changePage'])
-
 const props = defineProps({
   currentPage: {
     type: Number,
     default: 1
   },
-  elementsPerPage: {
+  perPage: {
     type: Number,
     default: 10
   },
@@ -36,14 +33,14 @@ const props = defineProps({
     type: Number,
     default: 100
   },
-  elementsInPagination: {
+  inPagination: {
     type: Number,
     default: 5
   }
 })
 
 const availableElements = computed(() => {
-  return props.elementsCount / props.elementsPerPage
+  return props.elementsCount / props.perPage
 })
 
 let i = 0
@@ -60,7 +57,7 @@ const addPage = (arr) => {
 
 			} else {
 				let newIndex = props.currentPage - j;
-				let counter = (props.elementsInPagination - 1) / 2;
+				let counter = (props.inPagination - 1) / 2;
 
 				if (!(newIndex < counter) && newIndex !== availableElements.value && newIndex !== 1) {
 					arr.unshift(newIndex)
@@ -77,7 +74,7 @@ const addPage = (arr) => {
 
 			i++
 
-			if (arr.length < props.elementsInPagination) {
+			if (arr.length < props.inPagination) {
 				addPage(arr)
 			} else {
 				i = 0
@@ -88,7 +85,7 @@ const addPage = (arr) => {
 const pagination = computed(() => {
   let pagination = []
 
-  if (availableElements.value < (props.elementsInPagination + 2)) {
+  if (availableElements.value < (props.inPagination + 2)) {
     for (let i = 1; i <= availableElements.value; i++) {
       pagination.push(i)
     }
@@ -103,7 +100,7 @@ const pagination = computed(() => {
 })
 
 watch(
-  () => props.elementsPerPage,
+  () => props.perPage,
   () => {
     if (props.currentPage > availableElements.value) {
       emit('changePage', 1)
@@ -112,7 +109,7 @@ watch(
 )
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .pagination {
   margin-top: 20px;
   display: flex;

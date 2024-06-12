@@ -15,7 +15,7 @@
 import { ref, computed, onMounted } from 'vue'
 
 const props = defineProps({
-  elementsPerPage: {
+  perPage: {
     type: Number,
     default: 10
   },
@@ -23,32 +23,15 @@ const props = defineProps({
     type: Number,
     default: 1
   },
-  elementsCount: {
-    type: Number,
-    default: 100
-  }
+  data: {
+    type: Array,
+    default: () => []
+  },
 })
 
-const fetchedList = ref([])
 const listToShow = computed(() => {
-  return fetchedList.value.slice((props.currentPage - 1) * props.elementsPerPage, props.currentPage * props.elementsPerPage)
+  return props.data.slice((props.currentPage - 1) * props.perPage, props.currentPage * props.perPage)
 })
-
-const fetchList = () => {
-  fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(response => response.json())
-    .then(json => {
-      fetchedList.value = json.slice(0, props.elementsCount)
-    })
-    .catch(error => {
-      console.log(error);
-    })
-}
-
-onMounted(() => {
-  fetchList()
-})
-
 </script>
 
 <style lang="scss">
